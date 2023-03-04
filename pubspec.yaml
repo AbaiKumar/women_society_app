@@ -46,6 +46,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  firebase_core: ^2.7.0
+  cloud_firestore: ^4.4.3
+  http: ^0.13.5
+  shared_preferences: ^2.0.18
+  firebase_messaging: ^14.2.5
+  provider: ^6.0.5
+  intl: ^0.18.0
+  image_picker: ^0.8.6+4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -59,8 +67,19 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets\images\society.jpeg
+    - assets\images\banner.jpg
+    - assets\icons\food.png
+    - assets\icons\paint.png
+    - assets\icons\beautyProduct.png
+    - assets\icons\tailoring.png
+    - assets\icons\feedback.png
+    - assets\icons\history.png
+    - assets\icons\orders.png
+    - assets\icons\menu.png
+
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -74,6 +93,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/RobotoMono-Regular.ttf
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans-Regular.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

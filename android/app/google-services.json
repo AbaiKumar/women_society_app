@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1049293132666",
+    "project_id": "innovate-for-society-women",
+    "storage_bucket": "innovate-for-society-women.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049293132666:android:bfecd8754766312e497cc3",
+        "android_client_info": {
+          "package_name": "com.example.society_app_for_women"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049293132666-j052k7kl312j2sh1dncl1jgsthvp7gqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnqdjhhDLpAmk0qXZKut19UQ7JXwITE0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049293132666-j052k7kl312j2sh1dncl1jgsthvp7gqk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
