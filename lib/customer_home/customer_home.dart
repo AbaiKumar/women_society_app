@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:society_app_for_women/common_widget/setting.dart';
+import 'package:society_app_for_women/customer_home/dynamicPage.dart';
 import '../common_widget/chat.dart';
+import '../common_widget/orders.dart';
 import '../common_widget/userDataCollect.dart';
 import '../model/data.dart';
 import 'package:provider/provider.dart';
@@ -159,7 +162,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     screens = [
       const Dashboard(),
       ChatUI(a),
-      const Text("Settings Page"),
+      MyOrders(a),
+      Setting(),
     ];
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
@@ -198,8 +202,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.settings,
+              Icons.shopping_cart_sharp,
               color: (_selectedIndex == 2) ? Colors.blue : Colors.black,
+            ),
+            label: "Orders",
+            backgroundColor: Colors.white,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: (_selectedIndex == 3) ? Colors.blue : Colors.black,
             ),
             label: "Settings",
             backgroundColor: Colors.white,
@@ -221,6 +233,13 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var a = Provider.of<Data>(context, listen: false);
+    List<Widget> route = [
+      CustMenu("Food Products", choices[0].url, a),
+      CustMenu("Painting", choices[1].url, a),
+      CustMenu("Beauty Products", choices[2].url, a),
+      CustMenu("Tailoring", choices[2].url, a)
+    ];
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -266,32 +285,41 @@ class Dashboard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Card(
-                        elevation: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              choices[index].title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => route[index],
                             ),
-                            SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: ClipRRect(
-                                  child: Image.asset(
-                                    choices[index].url,
-                                    alignment: Alignment.center,
+                          );
+                        },
+                        child: Card(
+                          elevation: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                choices[index].title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: ClipRRect(
+                                    child: Image.asset(
+                                      choices[index].url,
+                                      alignment: Alignment.center,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

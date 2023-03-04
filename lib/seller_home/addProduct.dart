@@ -132,7 +132,8 @@ class _ProductsAddState extends State<ProductsAdd> {
           "stock": quantity,
           "description": desc,
           "imgurl": resp[1],
-          "type": measure
+          "type": measure,
+          "sellername": obj.usrinfo["name"],
         });
         var path = obj.firestore.collection("Seller").doc(widget.obj.phone);
         path.get().then((value) {

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:society_app_for_women/common_widget/orders.dart';
 import 'package:society_app_for_women/seller_home/addProduct.dart';
 import 'package:society_app_for_women/seller_home/fullDetails.dart';
 import '../model/data.dart';
@@ -44,15 +45,8 @@ class ViewMenu extends StatelessWidget {
   }
 }
 
-class MyProducts extends StatefulWidget {
-  Data a;
-  MyProducts(this.a);
-  @override
-  State<MyProducts> createState() => _MyProductsState();
-}
-
 class Product {
-  final String id, desc, seller, name, stock, type, imageUrl, price;
+  final String id, desc, seller, name, stock, type, imageUrl, price, sname;
   Product(
     this.id,
     this.desc,
@@ -62,7 +56,15 @@ class Product {
     this.type,
     this.imageUrl,
     this.price,
+    this.sname,
   );
+}
+
+class MyProducts extends StatefulWidget {
+  Data a;
+  MyProducts(this.a);
+  @override
+  State<MyProducts> createState() => _MyProductsState();
 }
 
 class _MyProductsState extends State<MyProducts> {
@@ -95,9 +97,9 @@ class _MyProductsState extends State<MyProducts> {
             a["type"].toString(),
             a["imgurl"].toString(),
             a["price"].toString(),
+            a["sellername"].toString(),
           ),
         );
-        print(product);
       }).whenComplete(() {
         setState(() {});
       });
@@ -114,9 +116,19 @@ class _MyProductsState extends State<MyProducts> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
+                var tmp = product[index];
+                Map a = {
+                  "name": tmp.name,
+                  "desc": tmp.desc,
+                  "price": tmp.price,
+                  "seller": tmp.seller,
+                  "sname": tmp.sname,
+                  "imageUrl": tmp.imageUrl,
+                  "stock": tmp.stock,
+                };
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Elaborate(product[index]),
+                    builder: (context) => Elaborate(a, ""),
                   ),
                 );
               },
@@ -162,6 +174,9 @@ class _MyProductsState extends State<MyProducts> {
                                       //data print
                                       "Name  : ${product[index].name}",
                                       overflow: TextOverflow.fade,
+                                      style: const TextStyle(
+                                        fontFamily: "OpenSans",
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -170,6 +185,9 @@ class _MyProductsState extends State<MyProducts> {
                                       //data print
                                       "Stock : ${product[index].stock}",
                                       overflow: TextOverflow.fade,
+                                      style: const TextStyle(
+                                        fontFamily: "OpenSans",
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -178,6 +196,9 @@ class _MyProductsState extends State<MyProducts> {
                                       //data print
                                       "Price : ${product[index].price}",
                                       overflow: TextOverflow.fade,
+                                      style: const TextStyle(
+                                        fontFamily: "OpenSans",
+                                      ),
                                     ),
                                   ],
                                 ),

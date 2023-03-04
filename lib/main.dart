@@ -17,8 +17,6 @@ Future<void> _messageHandler(RemoteMessage message) async {
 
 late final prefs;
 Future frontTime() async {
-  await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_messageHandler);
   prefs = await SharedPreferences.getInstance(); //cookie
   return;
 }
@@ -26,6 +24,8 @@ Future frontTime() async {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
   runApp(
     MaterialApp(
       title: 'Women Innovation',
@@ -69,7 +69,7 @@ void main() {
             } else {
               return ChangeNotifierProvider(
                 create: (BuildContext context) => Data(),
-                child: const MyApp(),
+                builder: (context, child) => const MyApp(),
               );
             }
           }),
@@ -82,13 +82,22 @@ void main() {
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   late String? action, type;
+
+  void changeState() {
+    setState(
+      () {
+        action = "";
+        type = null;
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -102,41 +111,35 @@ class _MyAppState extends State<MyApp> {
       sound: true,
     );
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) async {
-      await showDialog(
-        useSafeArea: true,
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(
-            event.notification!.title.toString(),
-            style: const TextStyle(
-              color: Colors.orange,
-            ),
-          ),
-          content: Text(
-            event.notification!.body.toString(),
-            overflow: TextOverflow.visible,
-            maxLines: 4,
-          ),
-          actions: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                event.notification!.title ?? "Notification",
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("ok"),
-            )
-          ],
-        ),
-      );
+              content: Text(event.notification!.body!),
+              actions: [
+                TextButton(
+                  child: const Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     var a = Provider.of<Data>(context, listen: true);
+    a.stc = changeState;
     action = a.phone ?? action;
     type = a.type ?? type;
     return (type == null)

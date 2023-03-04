@@ -1,12 +1,14 @@
-// ignore_for_file: depend_on_referenced_packages, use_key_in_widget_constructors
+// ignore_for_file: depend_on_referenced_packages, use_key_in_widget_constructors, must_be_immutable, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:society_app_for_women/common_widget/orders.dart';
 import 'package:society_app_for_women/common_widget/userDataCollect.dart';
 import 'package:society_app_for_women/seller_home/view_menu.dart';
 import '../common_widget/chat.dart';
-import '../login module/login.dart';
+import '../common_widget/history.dart';
+import '../common_widget/setting.dart';
 import '../model/data.dart';
 import 'package:provider/provider.dart';
 import '../common_widget/myicon.dart';
@@ -24,12 +26,45 @@ const List<Choice> choices = <Choice>[
 ];
 
 class YellowBanner extends StatefulWidget {
+  Data a;
+  YellowBanner(this.a);
   @override
   State<YellowBanner> createState() => _YellowBannerState();
 }
 
 class _YellowBannerState extends State<YellowBanner> {
   String name = "Welcome";
+  String total = "0";
+  int cost = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getData(widget.a);
+  }
+
+  void getData(Data a) async {
+    var val = await a.firestore.collection("Seller").doc(a.phone).get();
+    List t = val.data()!["order"];
+    for (var i in t) {
+      i.get().then((value) {
+        var y = value.data();
+        if (y!["deliver"] == 1) {
+          int p = int.parse(y["price"]);
+          int p1 = int.parse(y["quantity_req"]);
+          cost += (p * p1);
+        }
+      });
+    }
+
+    a.firestore.collection("Seller").doc(a.phone).get().then((value) {
+      List t = value.data()!["order"];
+      total = t.length.toString();
+    }).whenComplete(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -123,8 +158,8 @@ class _YellowBannerState extends State<YellowBanner> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const Text(
-                                  "20",
+                                Text(
+                                  total,
                                 ),
                               ],
                             )),
@@ -141,13 +176,13 @@ class _YellowBannerState extends State<YellowBanner> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 const Text(
-                                  "Earning Today",
+                                  "Total Earning",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const Text(
-                                  "20",
+                                Text(
+                                  "₹${cost.toString()}",
                                 ),
                               ],
                             )),
@@ -184,19 +219,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     screens = [
       Dashboard(),
       ChatUI(a),
-      SafeArea(
-        child: ElevatedButton(
-          onPressed: () {
-            a.clear();
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => MyLogScreen(),
-              ),
-            );
-          },
-          child: const Text("Logout"),
-        ),
-      ),
+      Setting(),
     ];
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
@@ -257,12 +280,12 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var a = Provider.of<Data>(context, listen: false);
-    List<Widget> route = [ViewMenu(a), ViewMenu(a), ViewMenu(a), ViewMenu(a)];
+    List<Widget> route = [MyOrders(a), ViewMenu(a), ViewMenu(a), History(a)];
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        YellowBanner(),
+        YellowBanner(a),
         Expanded(
           child: SizedBox(
             width: double.infinity,

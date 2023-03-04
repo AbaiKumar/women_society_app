@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, depend_on_referenced_packages
+// ignore_for_file: use_key_in_widget_constructors, depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:math';
 
@@ -67,7 +67,7 @@ class _UserDataCollectState extends State<UserDataCollect> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(txt)));
   }
 
-  void save() async {
+  void save(context) async {
     try {
       var nm = name.text.toString(),
           workname = (widget.type == "Seller") ? cname.text.toString() : nm,
@@ -102,6 +102,7 @@ class _UserDataCollectState extends State<UserDataCollect> {
 
       if (response.body.isNotEmpty) {
         a("Data added Sucessfully");
+        Navigator.of(context).pop();
       } else {
         a("Data not added");
       }
@@ -133,7 +134,11 @@ class _UserDataCollectState extends State<UserDataCollect> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(10)),
-                          onPressed: (_currentStep == 1) ? save : continued,
+                          onPressed: (_currentStep == 1)
+                              ? () {
+                                  save(context);
+                                }
+                              : continued,
                           child: _currentStep == 1
                               ? const Text("submit")
                               : const Text("Continue"),

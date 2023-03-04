@@ -1,12 +1,11 @@
-// ignore_for_file: use_key_in_widget_constructors, must_be_immutable
+// ignore_for_file: must_be_immutable, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
 
-import 'view_menu.dart';
-
 class Elaborate extends StatefulWidget {
-  Product data;
-  Elaborate(this.data);
+  Map data;
+  String did;
+  Elaborate(this.data, this.did);
   @override
   State<Elaborate> createState() => _ElaborateState();
 }
@@ -17,6 +16,14 @@ class _ElaborateState extends State<Elaborate> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.yellow,
+        title: Text(
+          widget.data["name"],
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.indigo,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -25,55 +32,189 @@ class _ElaborateState extends State<Elaborate> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text(
-                  widget.data.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 30,
-                  ),
-                ),
-              ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.30,
+                height: 150,
                 width: double.infinity,
                 child: Hero(
                   tag: widget.data,
                   child: Image.network(
-                    "https://abai-194101.000webhostapp.com/women_innovation_hackathon/${widget.data.imageUrl}",
+                    "https://abai-194101.000webhostapp.com/women_innovation_hackathon/${widget.data["imageUrl"]}",
                     fit: BoxFit.fill,
                   ),
                 ),
               ),
-              SizedBox(
-                height: 50,
-                child: Text(
-                  "\n\nAbout :\n${widget.data.desc}",
-                  maxLines: 5,
-                  overflow: TextOverflow.clip,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w300,
-                  ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "About : ",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        widget.data["desc"],
+                        maxLines: 5,
+                        overflow: TextOverflow.clip,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              FittedBox(
-                child: Text(
-                  "Quantity Available :\n${widget.data.stock}",
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
+              Container(
+                margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "Quantity Available : ",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Text(
+                      widget.data["stock"],
+                      style: const TextStyle(
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              FittedBox(
-                child: Text(
-                  "Price :\n${widget.data.price}",
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "Price : ",
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      widget.data["price"],
+                      style: const TextStyle(
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "Seller Name : ",
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      widget.data["sname"],
+                      style: const TextStyle(
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "Seller number : ",
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      widget.data["seller"],
+                      style: const TextStyle(
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (widget.data["cname"] != null)
+                Container(
+                  margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                  child: Row(
+                    children: [
+                      const Text(
+                        "Customer name : ",
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        widget.data["cname"],
+                        style: const TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (widget.data["customer"] != null)
+                Container(
+                  margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                  child: Row(
+                    children: [
+                      const Text(
+                        "Customer number : ",
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        widget.data["customer"],
+                        style: const TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (widget.did != null)
+                Container(
+                  margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                  child: Row(
+                    children: [
+                      const Text(
+                        "Postal Delivery ID : ",
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        widget.did,
+                        style: const TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
             ],
           ),
         ),

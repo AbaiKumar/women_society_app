@@ -11,6 +11,12 @@ import '../model/data.dart';
 class MyLogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.dark,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarColor: Colors.white),
+    );
     return Builder(
       builder: (context) {
         return Scaffold(
@@ -142,7 +148,8 @@ class _LoginWidgetState extends State<LoginWidget> {
         firestore.collection(dropDownValue.toString()).doc(phone).set({
           "phone": phone,
           "type": dropDownValue.toString(),
-          "products": []
+          "products": [],
+          "order": [],
         }); //set logn info to firestore
 
         //redirect page

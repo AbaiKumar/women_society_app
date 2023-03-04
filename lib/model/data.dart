@@ -11,6 +11,7 @@ class Data with ChangeNotifier {
   dynamic phone = null, type = null, prefs = null;
   late Map<String, dynamic> usrinfo = {};
   late FirebaseFirestore firestore = FirebaseFirestore.instance;
+  late Function stc;
 
   Data() {
     //constructor to initialize object
@@ -63,7 +64,7 @@ class Data with ChangeNotifier {
         headers: {
           "Content-Type": "application/json",
           "Authorization":
-              "key=AAAAhzBkLaA:APA91bEpMPQ0IBqc4c-YVUPfUV7Du9b399yvt5SnOwtTRzpmd3fNnYBWpd8KGpYGFNnRuo83Vp002ntwIJmr3laiMMwHEqg5mcJn9P-k_myPO0n3H-XxIBZPILYgfoZ8FBS5usbEDqkY",
+              "key=AAAA9E6-k3o:APA91bFujDP4MT6pTf5VDUzSfDLXtG_iwi8GWV-kTl0hJd1F1pLpLGmS_qqULreV-nSRsweoOFNHEWg6Dqp8nD3NgaVZ67slPkKZSJMO04GzLNBb_nYz4jBYjjp5xr2uUCUdlCbhemKh",
         },
       );
     } catch (e) {
@@ -74,10 +75,11 @@ class Data with ChangeNotifier {
   void clear() async {
     //logout
     // Remove cokie data...
-    await prefs.clear();
+    prefs.clear();
     usrinfo = {};
     phone = null;
     type = null;
+    stc();
     notifyListeners();
   }
 }
