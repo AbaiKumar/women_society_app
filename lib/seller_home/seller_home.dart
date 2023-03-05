@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:society_app_for_women/common_widget/orders.dart';
+import 'package:society_app_for_women/common_widget/showReview.dart';
 import 'package:society_app_for_women/common_widget/userDataCollect.dart';
 import 'package:society_app_for_women/seller_home/view_menu.dart';
 import '../common_widget/chat.dart';
 import '../common_widget/history.dart';
+import '../common_widget/leaderboard.dart';
 import '../common_widget/setting.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../model/data.dart';
 import 'package:provider/provider.dart';
 import '../common_widget/myicon.dart';
@@ -44,8 +47,15 @@ class _YellowBannerState extends State<YellowBanner> {
   }
 
   void getData(Data a) async {
-    var val = await a.firestore.collection("Seller").doc(a.phone).get();
-    List t = val.data()!["order"];
+    var prefs = await SharedPreferences.getInstance(); //cookie
+    var val = await a.firestore
+        .collection("Seller")
+        .doc(
+          prefs.getString('phone'),
+        )
+        .get();
+    var d = val.data() ?? {};
+    List t = d["order"];
     for (var i in t) {
       i.get().then((value) {
         var y = value.data();
@@ -77,7 +87,11 @@ class _YellowBannerState extends State<YellowBanner> {
       color: Colors.yellow,
       child: Padding(
         padding: EdgeInsets.only(
-            left: left * 0.6, right: left * 0.6, top: left, bottom: left * 0.5),
+          left: left * 0.6,
+          right: left * 0.6,
+          top: left,
+          bottom: left * 0.5,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -171,21 +185,22 @@ class _YellowBannerState extends State<YellowBanner> {
                       ),
                       FittedBox(
                         child: SizedBox(
-                            width: size.width * 0.4,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Text(
-                                  "Total Earning",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          width: size.width * 0.4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              const Text(
+                                "Total Earning",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Text(
-                                  "₹${cost.toString()}",
-                                ),
-                              ],
-                            )),
+                              ),
+                              Text(
+                                "₹${cost.toString()}",
+                              ),
+                            ],
+                          ),
+                        ),
                       )
                     ],
                   ),
@@ -219,6 +234,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
     screens = [
       Dashboard(),
       ChatUI(a),
+      LeaderboardScreen(a),
       Setting(),
     ];
     SystemChrome.setSystemUIOverlayStyle(
@@ -258,8 +274,16 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.settings,
+              Icons.leaderboard_rounded,
               color: (_selectedIndex == 2) ? Colors.blue : Colors.black,
+            ),
+            label: "Leaderboard",
+            backgroundColor: Colors.white,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: (_selectedIndex == 3) ? Colors.blue : Colors.black,
             ),
             label: "Settings",
             backgroundColor: Colors.white,
@@ -280,7 +304,12 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var a = Provider.of<Data>(context, listen: false);
-    List<Widget> route = [MyOrders(a), ViewMenu(a), ViewMenu(a), History(a)];
+    List<Widget> route = [
+      MyOrders(a),
+      ViewMenu(a),
+      Review(a.phone),
+      History(a)
+    ];
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,

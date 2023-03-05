@@ -163,45 +163,42 @@ class _MyProductsState extends State<MyProducts> {
                             Container(
                               width: size.width * 0.45,
                               margin: EdgeInsets.all(size.width * 0.02),
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      //data print
-                                      "Name  : ${product[index].name}",
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        fontFamily: "OpenSans",
-                                      ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    //data print
+                                    "Name  : ${product[index].name}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontFamily: "OpenSans",
                                     ),
-                                    const SizedBox(
-                                      height: 10,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    //data print
+                                    "Stock : ${product[index].stock}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontFamily: "OpenSans",
                                     ),
-                                    Text(
-                                      //data print
-                                      "Stock : ${product[index].stock}",
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        fontFamily: "OpenSans",
-                                      ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    //data print
+                                    "Price : ${product[index].price}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontFamily: "OpenSans",
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      //data print
-                                      "Price : ${product[index].price}",
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        fontFamily: "OpenSans",
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             )
                           ],

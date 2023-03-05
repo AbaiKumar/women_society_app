@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import '../common_widget/reviewDisplay.dart';
+import '../common_widget/showReview.dart';
 
 class Elaborate extends StatefulWidget {
   Map data;
@@ -20,7 +22,7 @@ class _ElaborateState extends State<Elaborate> {
           widget.data["name"],
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.indigo,
+            color: Colors.red,
           ),
         ),
         centerTitle: true,
@@ -194,7 +196,29 @@ class _ElaborateState extends State<Elaborate> {
                     ],
                   ),
                 ),
-              if (widget.did != null)
+              Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.all(8),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Review(
+                          widget.data['seller'],
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.star_outlined,
+                    color: Colors.amber,
+                  ),
+                  label: const Text(
+                    "Click to See Seller Reviews",
+                  ),
+                ),
+              ),
+              if (widget.did.isNotEmpty) ...[
                 Container(
                   margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
                   child: Row(
@@ -202,9 +226,10 @@ class _ElaborateState extends State<Elaborate> {
                       const Text(
                         "Postal Delivery ID : ",
                         style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold),
+                          color: Colors.green,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
                         widget.did,
@@ -215,6 +240,26 @@ class _ElaborateState extends State<Elaborate> {
                     ],
                   ),
                 ),
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.all(8),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => StarReview(
+                            widget.data['seller'],
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.feedback),
+                    label: const Text(
+                      "Click to review.",
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ),

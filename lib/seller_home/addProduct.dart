@@ -138,7 +138,12 @@ class _ProductsAddState extends State<ProductsAdd> {
         var path = obj.firestore.collection("Seller").doc(widget.obj.phone);
         path.get().then((value) {
           List a = value.data()!["products"];
-          a.add(doc);
+          a.add(doc.id);
+          value.reference.update(
+            {
+              "products": a,
+            },
+          );
         });
         res = true;
       }

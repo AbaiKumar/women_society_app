@@ -1,10 +1,10 @@
 // ignore_for_file: use_key_in_widget_constructors, depend_on_referenced_packages, use_build_context_synchronously
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+//collect information about user
 class UserDataCollect extends StatefulWidget {
   final String phone, type;
   const UserDataCollect(this.phone, this.type);
@@ -100,6 +100,12 @@ class _UserDataCollectState extends State<UserDataCollect> {
         },
       );
 
+      late FirebaseFirestore firestore = FirebaseFirestore.instance;
+      firestore.collection(widget.type).doc(widget.phone).update(
+        {
+          "name": nm,
+        },
+      );
       if (response.body.isNotEmpty) {
         a("Data added Sucessfully");
         Navigator.of(context).pop();

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../model/data.dart';
+import '../seller_home/fullDetails.dart';
 import '../seller_home/view_menu.dart';
 
 class YellowBanner extends StatefulWidget {
@@ -226,11 +227,21 @@ class _ProductsState extends State<Products> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => Elaborate(product[index]),
-                    //   ),
-                    // );
+                    var tmp = product[index];
+                    Map a = {
+                      "name": tmp.name,
+                      "desc": tmp.desc,
+                      "price": tmp.price,
+                      "seller": tmp.seller,
+                      "sname": tmp.sname,
+                      "imageUrl": tmp.imageUrl,
+                      "stock": tmp.stock,
+                    };
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Elaborate(a, ""),
+                      ),
+                    );
                   },
                   child: Container(
                     margin: const EdgeInsets.all(8),
@@ -263,46 +274,43 @@ class _ProductsState extends State<Products> {
                                 Container(
                                   width: size.width * 0.45,
                                   margin: EdgeInsets.all(size.width * 0.02),
-                                  child: FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          //data print
-                                          "Name  : ${product[index].name}",
-                                          overflow: TextOverflow.fade,
-                                          style: const TextStyle(
-                                            fontFamily: "OpenSans",
-                                          ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        //data print
+                                        "Name  : ${product[index].name}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontFamily: "OpenSans",
                                         ),
-                                        const SizedBox(
-                                          height: 10,
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        //data print
+                                        "Stock : ${product[index].stock}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontFamily: "OpenSans",
                                         ),
-                                        Text(
-                                          //data print
-                                          "Stock : ${product[index].stock}",
-                                          overflow: TextOverflow.fade,
-                                          style: const TextStyle(
-                                            fontFamily: "OpenSans",
-                                          ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        //data print
+                                        "Price : ${product[index].price}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontFamily: "OpenSans",
                                         ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          //data print
-                                          "Price : ${product[index].price}",
-                                          overflow: TextOverflow.fade,
-                                          style: const TextStyle(
-                                            fontFamily: "OpenSans",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 )
                               ],
@@ -419,6 +427,5 @@ class _ProductsState extends State<Products> {
             )
           : Container(),
     );
-    ;
   }
 }

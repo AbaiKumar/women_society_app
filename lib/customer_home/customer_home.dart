@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:society_app_for_women/common_widget/leaderboard.dart';
 import 'package:society_app_for_women/common_widget/setting.dart';
 import 'package:society_app_for_women/customer_home/dynamicPage.dart';
 import '../common_widget/chat.dart';
@@ -121,7 +122,6 @@ class _YellowBannerState extends State<YellowBanner> {
                       if (loadingProgress == null) {
                         return child;
                       }
-                      ;
                       return Center(
                         child: CircularProgressIndicator(
                           value: loadingProgress.expectedTotalBytes != null
@@ -163,6 +163,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       const Dashboard(),
       ChatUI(a),
       MyOrders(a),
+      LeaderboardScreen(a),
       Setting(),
     ];
     SystemChrome.setSystemUIOverlayStyle(
@@ -210,8 +211,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.settings,
+              Icons.leaderboard_rounded,
               color: (_selectedIndex == 3) ? Colors.blue : Colors.black,
+            ),
+            label: "Leaderboard",
+            backgroundColor: Colors.white,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: (_selectedIndex == 4) ? Colors.blue : Colors.black,
             ),
             label: "Settings",
             backgroundColor: Colors.white,

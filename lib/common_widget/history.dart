@@ -71,6 +71,7 @@ class _MyProductsState extends State<MyProducts> {
   }
 
   Future<void> getProducts() async {
+    //diaply past orders of seller,customer
     product = [];
     if (widget.a.type == "Customer") {
       var a = await widget.a.firestore

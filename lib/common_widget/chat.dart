@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../model/data.dart';
 import 'package:intl/intl.dart';
 
+//chating page which only show today's chat only
 class ChatUI extends StatefulWidget {
   Data a;
   ChatUI(this.a);
@@ -12,6 +13,7 @@ class ChatUI extends StatefulWidget {
 }
 
 class Message {
+  //chunk
   final String message, type, date, name;
   int me = 0, compare = 0;
   Message(this.message, this.type, this.date, this.me, this.compare, this.name);
@@ -35,6 +37,7 @@ class _ChatUIState extends State<ChatUI> {
   }
 
   void getDataByFormat() {
+    //getting msg
     var now = DateTime.now();
     var format = "${now.day}|${now.month}|${now.year}";
     widget.a.firestore
@@ -68,6 +71,7 @@ class _ChatUIState extends State<ChatUI> {
   }
 
   void send() {
+    //sending msg
     if (control.text.isEmpty) {
       return;
     }

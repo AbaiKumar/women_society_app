@@ -150,6 +150,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           "type": dropDownValue.toString(),
           "products": [],
           "order": [],
+          "name": "",
         }); //set logn info to firestore
 
         //redirect page

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+//custom icon display widget
 class MyIcon extends StatelessWidget {
   final String letter;
 

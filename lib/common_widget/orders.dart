@@ -37,7 +37,8 @@ class Product {
       price,
       sname,
       customer,
-      cname;
+      cname,
+      did;
   dynamic ppath;
 
   Product(
@@ -53,6 +54,7 @@ class Product {
     this.cname,
     this.customer,
     this.ppath,
+    this.did,
   );
 }
 
@@ -83,7 +85,34 @@ class _MyProductsState extends State<MyProducts> {
           .get();
       for (var i in a.docs) {
         var d = i.data();
-        if (d["deliver"] == 0) {
+        product.add(
+          Product(
+            d["id"],
+            d["description"],
+            d["seller"],
+            d["name"],
+            d["quantity_req"],
+            d["type"],
+            d["imgUrl"],
+            d["price"],
+            d["sellername"],
+            d["customername"],
+            d["customer"],
+            "",
+            d["deliveryId"],
+          ),
+        );
+      }
+    } else {
+      var a = await widget.a.firestore
+          .collection("Seller")
+          .doc(widget.a.phone)
+          .get();
+      List orders = a.data()!["order"];
+      for (dynamic i in orders) {
+        var cpath = await i.get();
+        var d = cpath.data();
+        if (d!["deliver"] == 0) {
           product.add(
             Product(
               d["id"],
@@ -98,35 +127,8 @@ class _MyProductsState extends State<MyProducts> {
               d["customername"],
               d["customer"],
               "",
+              d["deliveryId"],
             ),
-          );
-          did = d["deliveryId"];
-        }
-      }
-    } else {
-      var a = await widget.a.firestore
-          .collection("Seller")
-          .doc(widget.a.phone)
-          .get();
-      List orders = a.data()!["order"];
-      for (dynamic i in orders) {
-        var cpath = await i.get();
-        var d = cpath.data();
-        if (d!["deliver"] == 0) {
-          product.add(
-            Product(
-                d["id"],
-                d["description"],
-                d["seller"],
-                d["name"],
-                d["quantity_req"],
-                d["type"],
-                d["imgUrl"],
-                d["price"],
-                d["sellername"],
-                d["customername"],
-                d["customer"],
-                ""),
           );
         }
       }
@@ -158,7 +160,7 @@ class _MyProductsState extends State<MyProducts> {
                 };
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Elaborate(a, did),
+                    builder: (context) => Elaborate(a, tmp.did),
                   ),
                 );
               },
@@ -368,7 +370,6 @@ class _MyProductsState extends State<MyProducts> {
             );
           }),
     );
-    ;
   }
 }
 
