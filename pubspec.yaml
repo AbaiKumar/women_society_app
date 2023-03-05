@@ -102,12 +102,6 @@ flutter:
     - family: Times
       fonts:
         - asset: fonts/times-new-roman.ttf
-    - family: SSR
-      fonts:
-        - asset: fonts/abel-regular.ttf
-    - family: SSR2
-      fonts:
-        - asset: fonts/Aaargh.ttf
     
   # fonts:
   #   - family: Schyler
