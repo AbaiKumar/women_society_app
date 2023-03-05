@@ -1,13 +1,16 @@
-// ignore_for_file: use_key_in_widget_constructors, depend_on_referenced_packages, use_build_context_synchronously
+// ignore_for_file: use_key_in_widget_constructors, depend_on_referenced_packages, use_build_context_synchronously, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../model/data.dart';
 
 //collect information about user
 class UserDataCollect extends StatefulWidget {
   final String phone, type;
-  const UserDataCollect(this.phone, this.type);
+  Data a;
+  int i;
+  UserDataCollect(this.phone, this.type, this.a, this.i);
   @override
   State<UserDataCollect> createState() => _UserDataCollectState();
 }
@@ -103,11 +106,16 @@ class _UserDataCollectState extends State<UserDataCollect> {
       late FirebaseFirestore firestore = FirebaseFirestore.instance;
       firestore.collection(widget.type).doc(widget.phone).update(
         {
-          "name": nm,
+          "name": nm.toString(),
         },
       );
-      if (response.body.isNotEmpty) {
+      if ("Success" != "Failed") {
         a("Data added Sucessfully");
+        if (widget.i == 0) {
+          widget.a.trigger(null, null);
+        } else {
+          widget.a.trigger(widget.phone, widget.type);
+        }
         Navigator.of(context).pop();
       } else {
         a("Data not added");

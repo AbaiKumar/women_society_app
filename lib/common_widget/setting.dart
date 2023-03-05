@@ -95,10 +95,8 @@ class _YellowBannerState extends State<YellowBanner> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => UserDataCollect(
-                              a.phone,
-                              a.type,
-                            ),
+                            builder: (context) =>
+                                UserDataCollect(a.phone, a.type, a, 1),
                           ),
                         );
                       },

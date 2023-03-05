@@ -173,15 +173,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
         statusBarColor: Colors.yellow,
       ),
     );
-    if (a.usrinfo.isNotEmpty && a.usrinfo["name"] == null) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => UserDataCollect(a.phone, a.type),
-          ),
-        );
-      });
-    }
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

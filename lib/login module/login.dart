@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, deprecated_member_use, use_build_context_synchronously, depend_on_referenced_packages
+// ignore_for_file: use_key_in_widget_constructors, deprecated_member_use, use_build_context_synchronously, depend_on_referenced_packages, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -6,9 +6,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
+import 'package:society_app_for_women/common_widget/userDataCollect.dart';
 import '../model/data.dart';
 
 class MyLogScreen extends StatelessWidget {
+  Data a;
+  MyLogScreen(this.a);
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -24,7 +27,7 @@ class MyLogScreen extends StatelessWidget {
           resizeToAvoidBottomInset:
               true, //Not move widgets up when keyboard appear
           body: SafeArea(
-            child: LoginWidget(),
+            child: LoginWidget(a),
           ),
         );
       },
@@ -33,6 +36,8 @@ class MyLogScreen extends StatelessWidget {
 }
 
 class LoginWidget extends StatefulWidget {
+  Data a;
+  LoginWidget(this.a);
   @override
   State<LoginWidget> createState() => _LoginWidgetState();
 }
@@ -97,7 +102,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
       var res = await http.get(Uri.parse(url));
       var type = res.body.toString();
-      if (type != "Failed ") {
+      if (type != "Failed") {
         //redirect page
         final prefs = await SharedPreferences.getInstance(); //cache storage
         final firestore = FirebaseFirestore.instance;
@@ -152,9 +157,13 @@ class _LoginWidgetState extends State<LoginWidget> {
           "order": [],
           "name": "",
         }); //set logn info to firestore
-
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) =>
+                UserDataCollect(phone, dropDownValue.toString(), widget.a, 0),
+          ),
+        );
         //redirect page
-        change(0);
       } else {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -414,8 +423,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                           if (check == 1) {
                             saveSignup(context);
                           } else {
-                            saveLogin(context,
-                                Provider.of<Data>(context, listen: false));
+                            saveLogin(
+                              context,
+                              Provider.of<Data>(context, listen: false),
+                            );
                           }
                         },
                         focusNode: but,

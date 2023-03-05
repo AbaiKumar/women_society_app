@@ -1,11 +1,9 @@
 // ignore_for_file: depend_on_referenced_packages, use_key_in_widget_constructors, must_be_immutable, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:society_app_for_women/common_widget/orders.dart';
 import 'package:society_app_for_women/common_widget/showReview.dart';
-import 'package:society_app_for_women/common_widget/userDataCollect.dart';
 import 'package:society_app_for_women/seller_home/view_menu.dart';
 import '../common_widget/chat.dart';
 import '../common_widget/history.dart';
@@ -215,6 +213,8 @@ class _YellowBannerState extends State<YellowBanner> {
 }
 
 class SellerHomeScreen extends StatefulWidget {
+  Data a;
+  SellerHomeScreen(this.a);
   @override
   State<SellerHomeScreen> createState() => _SellerHomeScreenState();
 }
@@ -222,6 +222,7 @@ class SellerHomeScreen extends StatefulWidget {
 class _SellerHomeScreenState extends State<SellerHomeScreen> {
   int _selectedIndex = 0;
   late List<Widget> screens;
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -244,15 +245,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
         statusBarColor: Colors.yellow,
       ),
     );
-    if (a.usrinfo.isNotEmpty && a.usrinfo["name"] == null) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => UserDataCollect(a.phone, a.type),
-          ),
-        );
-      });
-    }
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
@@ -302,12 +295,13 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
 class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     var a = Provider.of<Data>(context, listen: false);
+
+    Size size = MediaQuery.of(context).size;
     List<Widget> route = [
       MyOrders(a),
       ViewMenu(a),
-      Review(a.phone),
+      Review(a.phone ?? ""),
       History(a)
     ];
     return Column(

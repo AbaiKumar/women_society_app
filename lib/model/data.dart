@@ -19,7 +19,9 @@ class Data with ChangeNotifier {
       prefs = await SharedPreferences.getInstance(); //cookie
       phone = prefs.getString('phone');
       type = prefs.getString('type');
-      getUsrData();
+      if (type != null) {
+        getUsrData();
+      }
       notifyListeners();
     }();
   }
@@ -27,7 +29,9 @@ class Data with ChangeNotifier {
   void trigger(phone, type) {
     this.phone = phone;
     this.type = type;
-    getUsrData();
+    getUsrData().whenComplete(() {
+      notifyListeners();
+    });
     notifyListeners();
   }
 
@@ -38,6 +42,10 @@ class Data with ChangeNotifier {
     final url =
         "https://abai-194101.000webhostapp.com/women_innovation_hackathon/usrdata.php?phone=$phone";
     var response = await http.get(Uri.parse(url));
+    if (response.body == "No") {
+      notifyListeners();
+      return;
+    }
     usrinfo = json.decode(response.body)[0];
     notifyListeners();
   }

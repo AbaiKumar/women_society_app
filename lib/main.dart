@@ -17,6 +17,8 @@ Future<void> _messageHandler(RemoteMessage message) async {
 
 late final prefs;
 Future frontTime() async {
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
   prefs = await SharedPreferences.getInstance(); //cookie
   return;
 }
@@ -24,8 +26,6 @@ Future frontTime() async {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_messageHandler);
   runApp(
     MaterialApp(
       title: 'Women Innovation',
@@ -78,6 +78,7 @@ void main() {
       ),
     ),
   );
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
 }
 
 class MyApp extends StatefulWidget {
@@ -143,9 +144,9 @@ class _MyAppState extends State<MyApp> {
     action = a.phone ?? action;
     type = a.type ?? type;
     return (type == null)
-        ? MyLogScreen()
+        ? MyLogScreen(a)
         : (type == "Seller")
-            ? SellerHomeScreen()
+            ? SellerHomeScreen(a)
             : CustomerHomeScreen();
   }
 }
