@@ -44,7 +44,7 @@ class _YellowBannerState extends State<YellowBanner> {
                           child: Text(
                             widget.title,
                             style: const TextStyle(
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.bold,
                               fontSize: 18,
                               color: Colors.red,
                             ),
@@ -328,8 +328,9 @@ class _ProductsState extends State<Products> {
                                   context: context,
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(30.0),
-                                        topRight: Radius.circular(30.0)),
+                                      topLeft: Radius.circular(30.0),
+                                      topRight: Radius.circular(30.0),
+                                    ),
                                   ),
                                   builder: (BuildContext context) {
                                     return Padding(

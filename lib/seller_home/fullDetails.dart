@@ -21,9 +21,9 @@ class _ElaborateState extends State<Elaborate> {
         title: Text(
           widget.data["name"],
           style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.red,
-          ),
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              fontFamily: "OpenSans"),
         ),
         centerTitle: true,
       ),
@@ -46,7 +46,8 @@ class _ElaborateState extends State<Elaborate> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                margin: const EdgeInsets.only(
+                    top: 5.0, bottom: 5.0, left: 5, right: 5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,9 +55,10 @@ class _ElaborateState extends State<Elaborate> {
                     const Text(
                       "About : ",
                       style: TextStyle(
-                        color: Colors.red,
+                        color: Colors.black54,
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
+                        fontFamily: "OpenSans",
                       ),
                     ),
                     Expanded(
@@ -65,201 +67,127 @@ class _ElaborateState extends State<Elaborate> {
                         maxLines: 5,
                         overflow: TextOverflow.clip,
                         style: const TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                          fontFamily: "Times",
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                child: Row(
-                  children: [
-                    const Text(
-                      "Quantity Available : ",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    Text(
-                      widget.data["stock"],
-                      style: const TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                child: Row(
-                  children: [
-                    const Text(
-                      "Price : ",
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      widget.data["price"],
-                      style: const TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                child: Row(
-                  children: [
-                    const Text(
-                      "Seller Name : ",
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      widget.data["sname"],
-                      style: const TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                child: Row(
-                  children: [
-                    const Text(
-                      "Seller number : ",
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      widget.data["seller"],
-                      style: const TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (widget.data["cname"] != null)
-                Container(
-                  margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                  child: Row(
-                    children: [
-                      const Text(
-                        "Customer name : ",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        widget.data["cname"],
-                        style: const TextStyle(
-                          fontSize: 17,
-                        ),
-                      ),
+              SizedBox(
+                width: double.infinity,
+                child: Expanded(
+                  child: DataTable(
+                    // dataRowHeight: 400,
+                    columns: const [
+                      DataColumn(
+                          label: Text('',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))),
+                      DataColumn(
+                          label: Text(
+                        '',
+                      )),
                     ],
-                  ),
-                ),
-              if (widget.data["customer"] != null)
-                Container(
-                  margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                  child: Row(
-                    children: [
-                      const Text(
-                        "Customer number : ",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        widget.data["customer"],
-                        style: const TextStyle(
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.all(8),
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Review(
-                          widget.data['seller'],
-                        ),
-                      ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.star_outlined,
-                    color: Colors.amber,
-                  ),
-                  label: const Text(
-                    "Click to See Seller Reviews",
-                  ),
-                ),
-              ),
-              if (widget.did.isNotEmpty) ...[
-                Container(
-                  margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                  child: Row(
-                    children: [
-                      const Text(
-                        "Postal Delivery ID : ",
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        widget.did,
-                        style: const TextStyle(
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.all(8),
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => StarReview(
-                            widget.data['seller'],
+                    rows: [
+                      DataRow(cells: [
+                        const DataCell(Text('Quantity Available')),
+                        DataCell(
+                          Text(
+                            widget.data["stock"],
+                            maxLines: 50,
+                            overflow: TextOverflow.clip,
                           ),
                         ),
-                      );
-                    },
-                    icon: const Icon(Icons.feedback),
-                    label: const Text(
-                      "Click to review.",
-                    ),
+                      ]),
+                      DataRow(cells: [
+                        const DataCell(Text('Price')),
+                        DataCell(Text(widget.data["price"])),
+                      ]),
+                      DataRow(cells: [
+                        const DataCell(Text('Seller Name')),
+                        DataCell(Text(widget.data["sname"])),
+                      ]),
+                      DataRow(cells: [
+                        const DataCell(Text('Seller Number')),
+                        DataCell(Text(widget.data["seller"])),
+                      ]),
+                      if (widget.data["cname"] != null)
+                        DataRow(cells: [
+                          const DataCell(Text('Customer Name')),
+                          DataCell(Text(widget.data["cname"])),
+                        ]),
+                      if (widget.data["customer"] != null)
+                        DataRow(cells: [
+                          const DataCell(Text('Customer Number')),
+                          DataCell(Text(widget.data["customer"])),
+                        ]),
+                      if (widget.did.isNotEmpty)
+                        DataRow(cells: [
+                          const DataCell(Text('Postal DeliveryID')),
+                          DataCell(Text(widget.did)),
+                        ]),
+                    ],
                   ),
                 ),
-              ],
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (widget.did.isNotEmpty)
+                      FittedBox(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => StarReview(
+                                    widget.data['seller'],
+                                  ),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.feedback),
+                            label: const Text(
+                              "Add review",
+                            ),
+                          ),
+                        ),
+                      ),
+                    const SizedBox(
+                      width: 2,
+                    ),
+                    FittedBox(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => Review(
+                                  widget.data['seller'],
+                                ),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.star_outlined,
+                            color: Colors.amber,
+                          ),
+                          label: const Text(
+                            "See reviews",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
