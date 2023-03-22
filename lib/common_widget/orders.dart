@@ -76,7 +76,7 @@ class _MyProductsState extends State<MyProducts> {
   }
 
   Future<void> getProducts() async {
-    product = [];
+    product.clear();
     if (widget.a.type == "Customer") {
       var a = await widget.a.firestore
           .collection("Customer")
@@ -126,7 +126,7 @@ class _MyProductsState extends State<MyProducts> {
               d["sellername"],
               d["customername"],
               d["customer"],
-              "",
+              i,
               d["deliveryId"],
             ),
           );
@@ -141,234 +141,249 @@ class _MyProductsState extends State<MyProducts> {
     Size size = MediaQuery.of(context).size;
 
     return Expanded(
-      child: ListView.builder(
-          itemCount: product.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                var tmp = product[index];
-                Map a = {
-                  "name": tmp.name,
-                  "desc": tmp.desc,
-                  "price": tmp.price,
-                  "seller": tmp.seller,
-                  "sname": tmp.sname,
-                  "imageUrl": tmp.imageUrl,
-                  "stock": tmp.stock,
-                  "cname": tmp.cname,
-                  "customer": tmp.customer,
-                };
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Elaborate(a, tmp.did),
-                  ),
-                );
-              },
-              child: Container(
-                margin: const EdgeInsets.all(8),
-                child: Card(
-                  elevation: 1,
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              //image widget
-                              width: size.width * 0.38,
-                              height: size.height * 0.15,
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(20),
+      child: RefreshIndicator(
+        onRefresh: () => getProducts(),
+        child: ListView.builder(
+            itemCount: product.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  var tmp = product[index];
+                  Map a = {
+                    "name": tmp.name,
+                    "desc": tmp.desc,
+                    "price": tmp.price,
+                    "seller": tmp.seller,
+                    "sname": tmp.sname,
+                    "imageUrl": tmp.imageUrl,
+                    "stock": tmp.stock,
+                    "cname": tmp.cname,
+                    "customer": tmp.customer,
+                  };
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Elaborate(a, tmp.did),
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(8),
+                  child: Card(
+                    elevation: 1,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                //image widget
+                                width: size.width * 0.38,
+                                height: size.height * 0.16,
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(20),
+                                    ),
+                                    child: Image.network(
+                                      "https://abai-194101.000webhostapp.com/women_innovation_hackathon/${product[index].imageUrl}",
+                                      alignment: Alignment.center,
+                                    ),
                                   ),
-                                  child: Image.network(
-                                    "https://abai-194101.000webhostapp.com/women_innovation_hackathon/${product[index].imageUrl}",
-                                    alignment: Alignment.center,
-                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              width: size.width * 0.45,
-                              margin: EdgeInsets.all(size.width * 0.02),
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      //data print
-                                      "Name  : ${product[index].name}",
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        fontFamily: "OpenSans",
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      //data print
-                                      "Quantity : ${product[index].stock}",
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        fontFamily: "OpenSans",
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      //data print
-                                      "Price : ${product[index].price}",
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        fontFamily: "OpenSans",
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      //data print
-                                      (widget.a.type == "Seller")
-                                          ? "Customer Name : ${product[index].cname}"
-                                          : "Seller Name : ${product[index].sname}",
-                                      overflow: TextOverflow.fade,
-                                      style: const TextStyle(
-                                        fontFamily: "OpenSans",
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      if (widget.a.type == "Seller")
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                          ),
-                          onPressed: () {
-                            showModalBottomSheet<void>(
-                              isScrollControlled: true,
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30.0),
-                                  topRight: Radius.circular(30.0),
-                                ),
-                              ),
-                              builder: (BuildContext context) {
-                                return Padding(
-                                  padding: MediaQuery.of(context).viewInsets,
+                              Container(
+                                width: size.width * 0.45,
+                                margin: EdgeInsets.all(size.width * 0.02),
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
                                   child: Column(
-                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Container(
-                                        margin: const EdgeInsets.all(20),
-                                        child: Wrap(
-                                          children: <Widget>[
-                                            TextField(
-                                              controller: _textController,
-                                              decoration: const InputDecoration(
-                                                hintText:
-                                                    'Enter Delivery-ID : ',
-                                              ),
-                                            ),
-                                          ],
+                                      Text(
+                                        //data print
+                                        "Name  : ${product[index].name}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontFamily: "OpenSans",
                                         ),
                                       ),
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          if (_textController.text.isEmpty) {
-                                            return;
-                                          }
-                                          //order here
-                                          product[index].ppath.update(
-                                            {
-                                              "deliver": 1,
-                                              "deliveryId":
-                                                  _textController.text,
-                                            },
-                                          );
-                                          var pp = await widget.a.firestore
-                                              .collection("products")
-                                              .get();
-
-                                          for (var i in pp.docs) {
-                                            var tmp = i.data();
-
-                                            if (tmp["id"].toString() ==
-                                                product[index].id.toString()) {
-                                              int v = int.parse(tmp['stock']) -
-                                                  int.parse(
-                                                    product[index].stock,
-                                                  );
-                                              i.reference.update(
-                                                {
-                                                  "stock": v.toString(),
-                                                },
-                                              );
-                                            }
-                                          }
-                                          getProducts();
-                                          String token = "";
-                                          widget.a.firestore
-                                              .collection("Customer")
-                                              .doc(product[index].customer)
-                                              .get()
-                                              .then((value) {
-                                            token = value.data()!["msgid"];
-                                          }).whenComplete(() {
-                                            widget.a.sendNotification(
-                                              "Message from Seller ${widget.a.usrinfo["name"]} !!!",
-                                              "Product will reach you soon",
-                                              token,
-                                            );
-                                          });
-                                          Navigator.of(context).pop();
-                                          FocusScope.of(context).unfocus();
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text("Order confirmed"),
-                                            ),
-                                          );
-                                        },
-                                        child: const Text("Confirm"),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        //data print
+                                        "Quantity : ${product[index].stock}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontFamily: "OpenSans",
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        //data print
+                                        "Price : ${product[index].price}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontFamily: "OpenSans",
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        //data print
+                                        (widget.a.type == "Seller")
+                                            ? "Customer Name : ${product[index].cname}"
+                                            : "Seller Name : ${product[index].sname}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontFamily: "OpenSans",
+                                        ),
                                       ),
                                     ],
                                   ),
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                          ),
-                          label: const Text(
-                            "Delivered",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                    ],
+                        if (widget.a.type == "Seller")
+                          Container(
+                            margin: const EdgeInsets.all(8),
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                              ),
+                              onPressed: () {
+                                showModalBottomSheet<void>(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30.0),
+                                      topRight: Radius.circular(30.0),
+                                    ),
+                                  ),
+                                  builder: (BuildContext context) {
+                                    return Padding(
+                                      padding:
+                                          MediaQuery.of(context).viewInsets,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.all(20),
+                                            child: Wrap(
+                                              children: <Widget>[
+                                                TextField(
+                                                  controller: _textController,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    hintText:
+                                                        'Enter Delivery-ID : ',
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              if (_textController
+                                                  .text.isEmpty) {
+                                                return;
+                                              }
+                                              //order here
+                                              product[index].ppath.update(
+                                                {
+                                                  "deliver": 1,
+                                                  "deliveryId":
+                                                      _textController.text,
+                                                },
+                                              );
+                                              var pp = await widget.a.firestore
+                                                  .collection("products")
+                                                  .get();
+
+                                              for (var i in pp.docs) {
+                                                var tmp = i.data();
+
+                                                if (tmp["id"].toString() ==
+                                                    product[index]
+                                                        .id
+                                                        .toString()) {
+                                                  int v =
+                                                      int.parse(tmp['stock']) -
+                                                          int.parse(
+                                                            product[index]
+                                                                .stock,
+                                                          );
+                                                  i.reference.update(
+                                                    {
+                                                      "stock": v.toString(),
+                                                    },
+                                                  );
+                                                }
+                                              }
+                                              String token = "";
+                                              widget.a.firestore
+                                                  .collection("Customer")
+                                                  .doc(product[index].customer)
+                                                  .get()
+                                                  .then((value) {
+                                                token = value.data()!["msgid"];
+                                              }).whenComplete(() {
+                                                widget.a.sendNotification(
+                                                  "Message from Seller ${widget.a.usrinfo["name"]} !!!",
+                                                  "Product will reach you soon",
+                                                  token,
+                                                );
+                                                getProducts();
+                                              });
+                                              Navigator.of(context).pop();
+                                              FocusScope.of(context).unfocus();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content:
+                                                      Text("Order confirmed"),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text("Confirm"),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              ),
+                              label: const Text(
+                                "Delivered",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+      ),
     );
   }
 }

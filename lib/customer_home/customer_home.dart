@@ -1,14 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:society_app_for_women/common_widget/leaderboard.dart';
 import 'package:society_app_for_women/common_widget/setting.dart';
 import 'package:society_app_for_women/customer_home/dynamicPage.dart';
 import '../common_widget/chat.dart';
 import '../common_widget/orders.dart';
-import '../common_widget/userDataCollect.dart';
 import '../model/data.dart';
 import 'package:provider/provider.dart';
 import '../common_widget/myicon.dart';
@@ -241,95 +239,98 @@ class Dashboard extends StatelessWidget {
       CustMenu("Tailoring", choices[2].url, a)
     ];
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        YellowBanner(),
-        Expanded(
-          child: SizedBox(
-            width: double.infinity,
-            child: GridView.builder(
-              itemCount: choices.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Stack(
-                    alignment: Alignment.topLeft,
-                    fit: StackFit.expand,
-                    children: [
-                      Positioned(
-                        width: size.width * 0.3,
-                        height: size.height * 0.15,
-                        top: 0,
-                        right: 0,
-                        child: Opacity(
-                          opacity: 0.5,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.yellow,
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(
-                                  20,
-                                ),
-                              ),
-                              border: Border.all(
+    return RefreshIndicator(
+      onRefresh: () => a.getUsrData(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          YellowBanner(),
+          Expanded(
+            child: SizedBox(
+              width: double.infinity,
+              child: GridView.builder(
+                itemCount: choices.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Stack(
+                      alignment: Alignment.topLeft,
+                      fit: StackFit.expand,
+                      children: [
+                        Positioned(
+                          width: size.width * 0.3,
+                          height: size.height * 0.15,
+                          top: 0,
+                          right: 0,
+                          child: Opacity(
+                            opacity: 0.5,
+                            child: Container(
+                              decoration: BoxDecoration(
                                 color: Colors.yellow,
+                                borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(
+                                    20,
+                                  ),
+                                ),
+                                border: Border.all(
+                                  color: Colors.yellow,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => route[index],
-                            ),
-                          );
-                        },
-                        child: Card(
-                          elevation: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                choices[index].title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => route[index],
                               ),
-                              SizedBox(
-                                width: 60,
-                                height: 60,
-                                child: FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: ClipRRect(
-                                    child: Image.asset(
-                                      choices[index].url,
-                                      alignment: Alignment.center,
+                            );
+                          },
+                          child: Card(
+                            elevation: 1,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  choices[index].title,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 60,
+                                  height: 60,
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: ClipRRect(
+                                      child: Image.asset(
+                                        choices[index].url,
+                                        alignment: Alignment.center,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -8,10 +8,10 @@ import 'package:http/http.dart' as http;
 import '../model/data.dart';
 
 class ProductsAdd extends StatefulWidget {
-  String txt;
+  String txt, id;
   Map data;
   Data obj;
-  ProductsAdd(this.txt, this.data, this.obj);
+  ProductsAdd(this.txt, this.data, this.obj, this.id);
   @override
   State<ProductsAdd> createState() => _ProductsAddState();
 }
@@ -112,7 +112,7 @@ class _ProductsAddState extends State<ProductsAdd> {
 
   Future<void> uploadContent(BuildContext c) async {
     bool val = _glob.currentState!.validate();
-    if (!val || uploadimage.path == "") {
+    if (widget.data.isEmpty && (!val || uploadimage.path == "")) {
       display(context, "Pick Image and fill details.");
       return;
     }
@@ -148,12 +148,18 @@ class _ProductsAddState extends State<ProductsAdd> {
         res = true;
       }
     } else {
-      obj.firestore.collection("products").doc().update({
-        "name": name,
-        "price": price,
-        "stock": quantity,
-        "description": desc,
-      });
+      var a = await obj.firestore.collection("products").get();
+      for (var i in a.docs) {
+        var v = i.data();
+        if (v["id"].toString() == widget.id) {
+          i.reference.update({
+            "name": name,
+            "price": price,
+            "stock": quantity,
+            "description": desc,
+          });
+        }
+      }
       res = true;
     }
     if (res) {
@@ -191,6 +197,7 @@ class _ProductsAddState extends State<ProductsAdd> {
             children: [
               TextFormField(
                 keyboardType: TextInputType.text,
+                maxLength: 30,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
                   labelText: "Name",
@@ -208,7 +215,7 @@ class _ProductsAddState extends State<ProductsAdd> {
                 validator: (str) {
                   if (str == null || str.isEmpty) {
                     return "Please mention name ";
-                  } else if (str.length > 20) {
+                  } else if (str.length > 30) {
                     return "Enter name below 20 characters";
                   }
                   return null;
@@ -236,8 +243,8 @@ class _ProductsAddState extends State<ProductsAdd> {
                 validator: (str) {
                   if (str == null || str.isEmpty) {
                     return "Please mention name ";
-                  } else if (str.length > 20) {
-                    return "Enter name below 20 characters";
+                  } else if (str.length > 150) {
+                    return "Enter name below 150 characters";
                   }
                   return null;
                 },
@@ -272,7 +279,7 @@ class _ProductsAddState extends State<ProductsAdd> {
                     ],
                     onChanged: (_) {
                       measure = _.toString();
-                      FocusScope.of(context).requestFocus(_price);
+                      FocusScope.of(context).requestFocus(_quantity);
                     },
                     onSaved: (str) {
                       measure = str.toString();
@@ -349,7 +356,7 @@ class _ProductsAddState extends State<ProductsAdd> {
                           "Choose Image to Upload",
                         ),
                       ),
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                     ) //load image from file
                     ),
                 Container(

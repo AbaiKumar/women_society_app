@@ -87,33 +87,36 @@ class _ReviewState extends State<Review> {
         backgroundColor: Colors.yellow,
       ),
       body: review.isNotEmpty
-          ? ListView(
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.star,
-                      size: 30,
-                      color: Colors.amber,
-                    ),
-                    Text(
-                      total.toStringAsFixed(2),
-                      style: const TextStyle(fontSize: 30),
-                    ),
-                  ],
-                ),
-                Text("${review.length} reviews and rating"),
-                const Divider(
-                  thickness: 2,
-                ),
-                ListView.builder(
-                  itemBuilder: (context, index) {
-                    return con(index);
-                  },
-                  shrinkWrap: true,
-                  itemCount: review.length,
-                ),
-              ],
+          ? RefreshIndicator(
+              onRefresh: () => getReview(),
+              child: ListView(
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.star,
+                        size: 30,
+                        color: Colors.amber,
+                      ),
+                      Text(
+                        total.toStringAsFixed(2),
+                        style: const TextStyle(fontSize: 30),
+                      ),
+                    ],
+                  ),
+                  Text("${review.length} reviews and rating"),
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  ListView.builder(
+                    itemBuilder: (context, index) {
+                      return con(index);
+                    },
+                    shrinkWrap: true,
+                    itemCount: review.length,
+                  ),
+                ],
+              ),
             )
           : const Center(
               child: Text(

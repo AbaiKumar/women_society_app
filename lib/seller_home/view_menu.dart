@@ -2,15 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:society_app_for_women/common_widget/orders.dart';
 import 'package:society_app_for_women/seller_home/addProduct.dart';
 import 'package:society_app_for_women/seller_home/fullDetails.dart';
 import '../model/data.dart';
 
-class ViewMenu extends StatelessWidget {
+class ViewMenu extends StatefulWidget {
   late Data a;
   ViewMenu(this.a);
 
+  @override
+  State<ViewMenu> createState() => _ViewMenuState();
+}
+
+class _ViewMenuState extends State<ViewMenu> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -20,6 +24,7 @@ class ViewMenu extends StatelessWidget {
         statusBarColor: Colors.yellow,
       ),
     );
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.yellow,
@@ -28,7 +33,8 @@ class ViewMenu extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProductsAdd("Add Product!", const {}, a),
+                builder: (context) =>
+                    ProductsAdd("Add Product!", const {}, widget.a, ""),
               ),
             );
           },
@@ -39,7 +45,7 @@ class ViewMenu extends StatelessWidget {
         ),
       ),
       body: Column(
-        children: [YellowBanner(), MyProducts(a)],
+        children: [YellowBanner(), MyProducts(widget.a)],
       ),
     );
   }
@@ -77,6 +83,7 @@ class _MyProductsState extends State<MyProducts> {
   }
 
   Future<void> getProducts() async {
+    product.clear();
     var a =
         await widget.a.firestore.collection("Seller").doc(widget.a.phone).get();
     var b = widget.a.firestore.collection("products");
@@ -111,126 +118,130 @@ class _MyProductsState extends State<MyProducts> {
     Size size = MediaQuery.of(context).size;
 
     return Expanded(
-      child: ListView.builder(
-          itemCount: product.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                var tmp = product[index];
-                Map a = {
-                  "name": tmp.name,
-                  "desc": tmp.desc,
-                  "price": tmp.price,
-                  "seller": tmp.seller,
-                  "sname": tmp.sname,
-                  "imageUrl": tmp.imageUrl,
-                  "stock": tmp.stock,
-                };
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Elaborate(a, ""),
-                  ),
-                );
-              },
-              child: Container(
-                margin: const EdgeInsets.all(8),
-                child: Card(
-                  elevation: 1,
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              //image widget
-                              width: size.width * 0.38,
-                              height: size.height * 0.15,
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(20),
-                                  ),
-                                  child: Image.network(
-                                    "https://abai-194101.000webhostapp.com/women_innovation_hackathon/${product[index].imageUrl}",
-                                    alignment: Alignment.center,
+      child: RefreshIndicator(
+        onRefresh: () => getProducts(),
+        child: ListView.builder(
+            itemCount: product.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  var tmp = product[index];
+                  Map a = {
+                    "name": tmp.name,
+                    "desc": tmp.desc,
+                    "price": tmp.price,
+                    "seller": tmp.seller,
+                    "sname": tmp.sname,
+                    "imageUrl": tmp.imageUrl,
+                    "stock": tmp.stock,
+                  };
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Elaborate(a, ""),
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(8),
+                  child: Card(
+                    elevation: 1,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                //image widget
+                                width: size.width * 0.38,
+                                height: size.height * 0.16,
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(20),
+                                    ),
+                                    child: Image.network(
+                                      "https://abai-194101.000webhostapp.com/women_innovation_hackathon/${product[index].imageUrl}",
+                                      alignment: Alignment.center,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              width: size.width * 0.45,
-                              margin: EdgeInsets.all(size.width * 0.02),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    //data print
-                                    "Name  : ${product[index].name}",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontFamily: "OpenSans",
+                              Container(
+                                width: size.width * 0.45,
+                                margin: EdgeInsets.all(size.width * 0.02),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      //data print
+                                      "Name  : ${product[index].name}",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontFamily: "OpenSans",
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    //data print
-                                    "Stock : ${product[index].stock}",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontFamily: "OpenSans",
+                                    const SizedBox(
+                                      height: 10,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    //data print
-                                    "Price : ${product[index].price}",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontFamily: "OpenSans",
+                                    Text(
+                                      //data print
+                                      "Stock : ${product[index].stock}",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontFamily: "OpenSans",
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      //data print
+                                      "Price : ${product[index].price}",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontFamily: "OpenSans",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              Product a = product[index];
-                              return ProductsAdd(
-                                "Edit Product!",
-                                {
-                                  "name": a.name,
-                                  "description": a.desc,
-                                  "stock": a.stock,
-                                  "price": a.price,
-                                },
-                                widget.a,
-                              );
-                            }),
-                          );
-                        },
-                        icon: const Icon(Icons.edit),
-                        label: const Text("Edit Product"),
-                      ),
-                    ],
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) {
+                                Product a = product[index];
+                                return ProductsAdd(
+                                  "Update Product!",
+                                  {
+                                    "name": a.name,
+                                    "description": a.desc,
+                                    "stock": a.stock,
+                                    "price": a.price,
+                                  },
+                                  widget.a,
+                                  a.id,
+                                );
+                              }),
+                            );
+                          },
+                          icon: const Icon(Icons.edit),
+                          label: const Text("Edit Product"),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+      ),
     );
     ;
   }

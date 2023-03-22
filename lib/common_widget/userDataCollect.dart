@@ -1,9 +1,9 @@
 // ignore_for_file: use_key_in_widget_constructors, depend_on_referenced_packages, use_build_context_synchronously, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/data.dart';
+import 'package:http/http.dart' as http;
 
 //collect information about user
 class UserDataCollect extends StatefulWidget {
@@ -90,7 +90,7 @@ class _UserDataCollectState extends State<UserDataCollect> {
       }
       String url =
           "https://abai-194101.000webhostapp.com/women_innovation_hackathon/datapost.php";
-      var response = await http.post(
+      await http.post(
         Uri.parse(url),
         body: {
           "phone": widget.phone,
@@ -102,7 +102,6 @@ class _UserDataCollectState extends State<UserDataCollect> {
           "code": code
         },
       );
-
       late FirebaseFirestore firestore = FirebaseFirestore.instance;
       firestore.collection(widget.type).doc(widget.phone).update(
         {
@@ -210,6 +209,7 @@ class _UserDataCollectState extends State<UserDataCollect> {
                           decoration: const InputDecoration(labelText: 'State'),
                         ),
                         TextField(
+                          keyboardType: TextInputType.number,
                           controller: pin,
                           decoration:
                               const InputDecoration(labelText: 'Pincode'),

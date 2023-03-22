@@ -135,133 +135,136 @@ class _MyProductsState extends State<MyProducts> {
     Size size = MediaQuery.of(context).size;
 
     return Expanded(
-      child: ListView.builder(
-          itemCount: product.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                var tmp = product[index];
-                Map a = {
-                  "name": tmp.name,
-                  "desc": tmp.desc,
-                  "price": tmp.price,
-                  "seller": tmp.seller,
-                  "sname": tmp.sname,
-                  "imageUrl": tmp.imageUrl,
-                  "stock": tmp.stock,
-                  "cname": tmp.cname,
-                  "customer": tmp.customer,
-                };
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Elaborate(a, ""),
-                  ),
-                );
-              },
-              child: Container(
-                margin: const EdgeInsets.all(8),
-                child: Card(
-                  elevation: 1,
-                  borderOnForeground: true,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.green),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(
-                          10,
-                        ),
-                      ),
+      child: RefreshIndicator(
+        onRefresh: () => getProducts(),
+        child: ListView.builder(
+            itemCount: product.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  var tmp = product[index];
+                  Map a = {
+                    "name": tmp.name,
+                    "desc": tmp.desc,
+                    "price": tmp.price,
+                    "seller": tmp.seller,
+                    "sname": tmp.sname,
+                    "imageUrl": tmp.imageUrl,
+                    "stock": tmp.stock,
+                    "cname": tmp.cname,
+                    "customer": tmp.customer,
+                  };
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Elaborate(a, ""),
                     ),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                //image widget
-                                width: size.width * 0.38,
-                                height: size.height * 0.15,
-                                child: FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(20),
-                                    ),
-                                    child: Image.network(
-                                      "https://abai-194101.000webhostapp.com/women_innovation_hackathon/${product[index].imageUrl}",
-                                      alignment: Alignment.center,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: size.width * 0.45,
-                                margin: EdgeInsets.all(size.width * 0.02),
-                                child: FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        //data print
-                                        "Name  : ${product[index].name}",
-                                        overflow: TextOverflow.fade,
-                                        style: const TextStyle(
-                                          fontFamily: "OpenSans",
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        //data print
-                                        "Quamtity : ${product[index].stock}",
-                                        overflow: TextOverflow.fade,
-                                        style: const TextStyle(
-                                          fontFamily: "OpenSans",
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        //data print
-                                        "Price : ${product[index].price}",
-                                        overflow: TextOverflow.fade,
-                                        style: const TextStyle(
-                                          fontFamily: "OpenSans",
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        //data print
-                                        "Customer Name : ${product[index].cname}",
-                                        overflow: TextOverflow.fade,
-                                        style: const TextStyle(
-                                          fontFamily: "OpenSans",
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(8),
+                  child: Card(
+                    elevation: 1,
+                    borderOnForeground: true,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.green),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(
+                            10,
                           ),
                         ),
-                      ],
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  //image widget
+                                  width: size.width * 0.38,
+                                  height: size.height * 0.15,
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                      child: Image.network(
+                                        "https://abai-194101.000webhostapp.com/women_innovation_hackathon/${product[index].imageUrl}",
+                                        alignment: Alignment.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: size.width * 0.45,
+                                  margin: EdgeInsets.all(size.width * 0.02),
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          //data print
+                                          "Name  : ${product[index].name}",
+                                          overflow: TextOverflow.fade,
+                                          style: const TextStyle(
+                                            fontFamily: "OpenSans",
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          //data print
+                                          "Quantity : ${product[index].stock}",
+                                          overflow: TextOverflow.fade,
+                                          style: const TextStyle(
+                                            fontFamily: "OpenSans",
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          //data print
+                                          "Price : ${product[index].price}",
+                                          overflow: TextOverflow.fade,
+                                          style: const TextStyle(
+                                            fontFamily: "OpenSans",
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          //data print
+                                          "Customer Name : ${product[index].cname}",
+                                          overflow: TextOverflow.fade,
+                                          style: const TextStyle(
+                                            fontFamily: "OpenSans",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+      ),
     );
     ;
   }

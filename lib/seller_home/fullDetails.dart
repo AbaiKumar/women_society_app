@@ -31,10 +31,12 @@ class _ElaborateState extends State<Elaborate> {
         child: Container(
           margin: const EdgeInsets.only(top: 10, left: 8, right: 8, bottom: 10),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.all(20),
                 height: 150,
                 width: double.infinity,
                 child: Hero(
@@ -42,18 +44,17 @@ class _ElaborateState extends State<Elaborate> {
                   child: Image.network(
                     "https://abai-194101.000webhostapp.com/women_innovation_hackathon/${widget.data["imageUrl"]}",
                     fit: BoxFit.fill,
+                    alignment: Alignment.center,
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(
-                    top: 5.0, bottom: 5.0, left: 5, right: 5),
+              SizedBox(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const Text(
-                      "About : ",
+                      "Description : ",
                       style: TextStyle(
                         color: Colors.black54,
                         fontWeight: FontWeight.bold,
@@ -61,16 +62,14 @@ class _ElaborateState extends State<Elaborate> {
                         fontFamily: "OpenSans",
                       ),
                     ),
-                    Expanded(
-                      child: Text(
-                        widget.data["desc"],
-                        maxLines: 5,
-                        overflow: TextOverflow.clip,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                          fontFamily: "Times",
-                        ),
+                    Text(
+                      widget.data["desc"],
+                      maxLines: 5,
+                      overflow: TextOverflow.clip,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                        fontFamily: "Times",
                       ),
                     ),
                   ],
@@ -78,59 +77,61 @@ class _ElaborateState extends State<Elaborate> {
               ),
               SizedBox(
                 width: double.infinity,
-                child: Expanded(
-                  child: DataTable(
-                    // dataRowHeight: 400,
-                    columns: const [
-                      DataColumn(
-                          label: Text('',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold))),
-                      DataColumn(
-                          label: Text(
+                child: DataTable(
+                  columns: const [
+                    DataColumn(
+                      label: Text(
                         '',
-                      )),
-                    ],
-                    rows: [
-                      DataRow(cells: [
-                        const DataCell(Text('Quantity Available')),
-                        DataCell(
-                          Text(
-                            widget.data["stock"],
-                            maxLines: 50,
-                            overflow: TextOverflow.clip,
-                          ),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ]),
+                      ),
+                    ),
+                    DataColumn(
+                        label: Text(
+                      '',
+                    )),
+                  ],
+                  rows: [
+                    DataRow(cells: [
+                      const DataCell(Text('Quantity Available')),
+                      DataCell(
+                        Text(
+                          widget.data["stock"],
+                          maxLines: 50,
+                          overflow: TextOverflow.clip,
+                        ),
+                      ),
+                    ]),
+                    DataRow(cells: [
+                      const DataCell(Text('Price')),
+                      DataCell(Text(widget.data["price"])),
+                    ]),
+                    DataRow(cells: [
+                      const DataCell(Text('Seller Name')),
+                      DataCell(Text(widget.data["sname"])),
+                    ]),
+                    DataRow(cells: [
+                      const DataCell(Text('Seller Number')),
+                      DataCell(Text(widget.data["seller"])),
+                    ]),
+                    if (widget.data["cname"] != null)
                       DataRow(cells: [
-                        const DataCell(Text('Price')),
-                        DataCell(Text(widget.data["price"])),
+                        const DataCell(Text('Customer Name')),
+                        DataCell(Text(widget.data["cname"])),
                       ]),
+                    if (widget.data["customer"] != null)
                       DataRow(cells: [
-                        const DataCell(Text('Seller Name')),
-                        DataCell(Text(widget.data["sname"])),
+                        const DataCell(Text('Customer Number')),
+                        DataCell(Text(widget.data["customer"])),
                       ]),
+                    if (widget.did.isNotEmpty)
                       DataRow(cells: [
-                        const DataCell(Text('Seller Number')),
-                        DataCell(Text(widget.data["seller"])),
+                        const DataCell(Text('Postal DeliveryID')),
+                        DataCell(Text(widget.did)),
                       ]),
-                      if (widget.data["cname"] != null)
-                        DataRow(cells: [
-                          const DataCell(Text('Customer Name')),
-                          DataCell(Text(widget.data["cname"])),
-                        ]),
-                      if (widget.data["customer"] != null)
-                        DataRow(cells: [
-                          const DataCell(Text('Customer Number')),
-                          DataCell(Text(widget.data["customer"])),
-                        ]),
-                      if (widget.did.isNotEmpty)
-                        DataRow(cells: [
-                          const DataCell(Text('Postal DeliveryID')),
-                          DataCell(Text(widget.did)),
-                        ]),
-                    ],
-                  ),
+                  ],
                 ),
               ),
               Container(

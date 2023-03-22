@@ -9,7 +9,6 @@ import '../common_widget/chat.dart';
 import '../common_widget/history.dart';
 import '../common_widget/leaderboard.dart';
 import '../common_widget/setting.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../model/data.dart';
 import 'package:provider/provider.dart';
 import '../common_widget/myicon.dart';
@@ -35,41 +34,17 @@ class YellowBanner extends StatefulWidget {
 
 class _YellowBannerState extends State<YellowBanner> {
   String name = "Welcome";
-  String total = "0";
+  int total = 0;
   int cost = 0;
 
   @override
   void initState() {
     super.initState();
-    getData(widget.a);
-  }
-
-  void getData(Data a) async {
-    var prefs = await SharedPreferences.getInstance(); //cookie
-    var val = await a.firestore
-        .collection("Seller")
-        .doc(
-          prefs.getString('phone'),
-        )
-        .get();
-    var d = val.data() ?? {};
-    List t = d["order"];
-    for (var i in t) {
-      i.get().then((value) {
-        var y = value.data();
-        if (y!["deliver"] == 1) {
-          int p = int.parse(y["price"]);
-          int p1 = int.parse(y["quantity_req"]);
-          cost += (p * p1);
-        }
+    widget.a.getDataOrders().whenComplete(() {
+      setState(() {
+        total = widget.a.total;
+        cost = widget.a.cost;
       });
-    }
-
-    a.firestore.collection("Seller").doc(a.phone).get().then((value) {
-      List t = value.data()!["order"];
-      total = t.length.toString();
-    }).whenComplete(() {
-      setState(() {});
     });
   }
 
@@ -144,63 +119,78 @@ class _YellowBannerState extends State<YellowBanner> {
                 ],
               ),
             ),
-            Container(
-              height: size.height * 0.15,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-                child: FittedBox(
-                  child: Row(
-                    children: [
-                      FittedBox(
-                        child: SizedBox(
-                            width: size.width * 0.4,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Text(
-                                  "Total Orders",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  total,
-                                ),
-                              ],
-                            )),
-                      ),
-                      Container(
-                        height: size.height * 0.07,
-                        width: 1,
-                        color: Colors.black,
-                      ),
-                      FittedBox(
-                        child: SizedBox(
-                          width: size.width * 0.4,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const Text(
-                                "Total Earning",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                "₹${cost.toString()}",
-                              ),
-                            ],
+            GestureDetector(
+              onTap: () {
+                a.getDataOrders().whenComplete(() {
+                  setState(() {
+                    total = a.total;
+                    cost = a.cost;
+                  });
+                });
+              },
+              child: Tooltip(
+                message: "Tap here to refresh",
+                child: Container(
+                  height: size.height * 0.15,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(5.0),
+                    child: FittedBox(
+                      child: Row(
+                        children: [
+                          FittedBox(
+                            child: SizedBox(
+                                width: size.width * 0.4,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    const Text(
+                                      "Total Orders",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      total.toString(),
+                                    ),
+                                  ],
+                                )),
                           ),
-                        ),
-                      )
-                    ],
+                          Container(
+                            height: size.height * 0.07,
+                            width: 1,
+                            color: Colors.black,
+                          ),
+                          FittedBox(
+                            child: SizedBox(
+                              width: size.width * 0.4,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Text(
+                                    "Total Earning",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "₹${cost.toString()}",
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
